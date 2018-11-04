@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-package com.ionoclast.playfabulous.client.model
+package com.ionoclast.playfabulous.model
 
 import com.ionoclast.kotlin.net.AbstractRestClient
 import kotlinx.coroutines.Deferred

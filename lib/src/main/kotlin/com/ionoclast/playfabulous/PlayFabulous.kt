@@ -15,7 +15,7 @@ package com.ionoclast.playfabulous
 import com.ionoclast.kotlin.delegate.clear
 import com.ionoclast.kotlin.delegate.clearableLazyInstance
 import com.ionoclast.kotlin.net.AbstractRestClient
-import com.ionoclast.playfabulous.client.api.LoginApi
+import com.ionoclast.playfabulous.api.AuthApi
 
 
 /**
@@ -25,13 +25,15 @@ class PlayFabulous : AbstractRestClient() {
 	override val baseUri = "https://abcd.playfabapi.com/" // FIXME
 	override val fallbackDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-	val loginApi by clearableLazyInstance { restClient.create(LoginApi::class.java)!! }
+	val authApi by clearableLazyInstance { restClient.create(AuthApi::class.java)!! }
 
 	override fun cleanup() {
 		super.cleanup()
 
-		::loginApi.clear()
+		::authApi.clear()
 	}
 }
 
 fun playFabApiBaseUrl(titleId: String) = "https://$titleId.playfabapi.com/"
+
+fun endpointUrl(titleId: String, path: String) = "${playFabApiBaseUrl(titleId)}$path"
