@@ -36,7 +36,7 @@ class DateDeserializerTest {
 	@BeforeTest
 	fun initBefore() {
 		gson = GsonBuilder()
-				.registerTypeAdapter(Date::class.java, DateDeserializer(FALLBACK_FORMAT))
+				.registerTypeAdapter(Date::class.java, DateDeserializer(arrayOf(FALLBACK_FORMAT)))
 				.create()
 	}
 

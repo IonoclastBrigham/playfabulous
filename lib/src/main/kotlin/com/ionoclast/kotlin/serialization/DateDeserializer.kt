@@ -27,15 +27,22 @@ import java.util.*
  *
  * @see GsonBuilder.registerTypeAdapter
  */
-class DateDeserializer(private val fallbackDateFormat: String?) : JsonDeserializer<Date> {
-    private val fmt by lazy { SimpleDateFormat(fallbackDateFormat) }
+class DateDeserializer(fallbackDateFormats: Array<String>?) : JsonDeserializer<Date> {
+    private val parsers by lazy { fallbackDateFormats?.map { fmt -> SimpleDateFormat(fmt) } }
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Date {
         try {
             return Date(json.asLong)
         } catch (e: Exception) {
-            fallbackDateFormat?.let {
-                return fmt.parse(json.asString)
+            parsers?.let { parsers ->
+                val jsonString = json.asString
+                for (parser in parsers) {
+                    try {
+                        return parser.parse(jsonString)
+                    } catch (e: Exception) {
+                        // ignore
+                    }
+                }
             }
             throw ParseException("Unknown date format $json", 0)
         }

@@ -38,7 +38,7 @@ interface ClientConfig {
     val baseUri: String
     val timeoutSecs get() = 0L
     val logLevel get() = HttpLoggingInterceptor.Level.HEADERS
-    val fallbackDateFormat: String? get() = null
+    val fallbackDateFormats: Array<String>? get() = null
 }
 
 /**
@@ -70,7 +70,9 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
 
 
     data class RestResponse<out T>(val result: T? = null, val err: Throwable? = null)
-    class ApiError(msg: String, val errBody: String? = null, cause: Throwable? = null) : IOException(msg, cause)
+    class ApiError(msg: String, val errBody: String? = null, cause: Throwable? = null) : IOException(msg, cause) {
+        override fun toString() = message!!
+    }
 
 
     private val job by clearableLazyInstance { Job() }
@@ -104,7 +106,7 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
                 .build()
 
         val gson = GsonBuilder().apply {
-            fallbackDateFormat?.let { registerTypeAdapter(Date::class.java, DateDeserializer(fallbackDateFormat)) }
+            fallbackDateFormats?.let { registerTypeAdapter(Date::class.java, DateDeserializer(fallbackDateFormats)) }
         }.create()
 
         return Retrofit.Builder()
