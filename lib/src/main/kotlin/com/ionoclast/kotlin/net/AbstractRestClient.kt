@@ -70,7 +70,7 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
 
 
     data class RestResponse<out T>(val result: T? = null, val err: ApiError? = null)
-    class ApiError(msg: String, val errBody: String? = null, statusCode: Int? = null, cause: Throwable? = null) : IOException(msg, cause) {
+    class ApiError(msg: String, val errBody: String? = null, val statusCode: Int? = null, cause: Throwable? = null) : IOException(msg, cause) {
         override fun toString() = message!!
     }
 

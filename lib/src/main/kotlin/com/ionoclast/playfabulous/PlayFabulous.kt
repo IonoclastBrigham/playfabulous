@@ -23,7 +23,13 @@ import com.ionoclast.playfabulous.api.PlayerAccountApi
  * A Kotlin-first PlayFab API Client.
  */
 class PlayFabulous : AbstractRestClient() {
-	override val baseUri = "https://abcd.playfabapi.com/" // FIXME
+	/**
+	 * ⚠️ INVALID: always override with a `@Url` param.
+	 *
+	 * PlayFabulous is meant to be able to talk to multiple title IDs, so no
+	 * universally valid baseUri is possible.
+	 */
+	override val baseUri = "http://invalid/do/not/use/"
 	override val fallbackDateFormats = arrayOf(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'",
 			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
