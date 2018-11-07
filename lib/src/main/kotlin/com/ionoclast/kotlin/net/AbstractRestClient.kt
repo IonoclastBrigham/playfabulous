@@ -14,7 +14,7 @@ package com.ionoclast.kotlin.net
 
 import com.google.gson.GsonBuilder
 import com.ionoclast.kotlin.delegate.clear
-import com.ionoclast.kotlin.delegate.clearableLazyInstance
+import com.ionoclast.kotlin.delegate.clearableLazy
 import com.ionoclast.kotlin.serialization.DateDeserializer
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.*
@@ -75,10 +75,10 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
     }
 
 
-    private val job by clearableLazyInstance { Job() }
+    private val job by clearableLazy { Job() }
     override val coroutineContext get() = Dispatchers.IO + job
 
-    protected val restClient by clearableLazyInstance(::buildClientAdapter)
+    protected val restClient by clearableLazy(::buildClientAdapter)
 
     /**
      * *Builds a reasonable default API adapter.*

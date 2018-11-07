@@ -13,7 +13,7 @@
 package com.ionoclast.playfabulous
 
 import com.ionoclast.kotlin.delegate.clear
-import com.ionoclast.kotlin.delegate.clearableLazyInstance
+import com.ionoclast.kotlin.delegate.clearableLazy
 import com.ionoclast.kotlin.net.AbstractRestClient
 import com.ionoclast.playfabulous.api.AuthApi
 import com.ionoclast.playfabulous.api.PlayerAccountApi
@@ -29,9 +29,9 @@ class PlayFabulous : AbstractRestClient() {
 			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 	)
 
-	val authApi by clearableLazyInstance { restClient.create(AuthApi::class.java)!! }
+	val authApi by clearableLazy { restClient.create(AuthApi::class.java)!! }
 
-	val playerAccountApi by clearableLazyInstance { restClient.create(PlayerAccountApi::class.java)!! }
+	val playerAccountApi by clearableLazy { restClient.create(PlayerAccountApi::class.java)!! }
 
 	override fun cleanup() {
 		super.cleanup()

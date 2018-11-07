@@ -19,11 +19,12 @@ import kotlin.test.assertEquals
 class ClearableLazyInstanceTest {
 	companion object {
 		const val MESSAGE = "Hello, Ionoclast!"
+		const val MESSAGE_LEN = MESSAGE.length
 	}
 
 
 	private var initRunCount = 0
-	private val clearableField by clearableLazyInstance {
+	private val clearableField by clearableLazy {
 		++initRunCount
 		MESSAGE
 	}
@@ -70,5 +71,15 @@ class ClearableLazyInstanceTest {
 		assertEquals(1, initRunCount, "Init should not run after clear unless accessed")
 		clearableField.length
 		assertEquals(2, initRunCount, "Init should be re-run on first usage after clearing")
+	}
+
+	@Test
+	fun testLocalProperty() {
+		val local by clearableLazy { MESSAGE }
+		assertEquals(MESSAGE_LEN, local.length)
+		assertEquals(MESSAGE, local)
+
+		// TODO: test clearing (references not supported by Kotlin yet)
+		//::local.clear()
 	}
 }

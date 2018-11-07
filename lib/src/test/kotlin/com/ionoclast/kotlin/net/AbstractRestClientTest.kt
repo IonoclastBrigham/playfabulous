@@ -12,7 +12,7 @@
 package com.ionoclast.kotlin.net
 
 import com.ionoclast.kotlin.delegate.clear
-import com.ionoclast.kotlin.delegate.clearableLazyInstance
+import com.ionoclast.kotlin.delegate.clearableLazy
 import com.ionoclast.kotlin.net.AbstractRestClient.RestResponse
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.runBlocking
@@ -34,7 +34,7 @@ private interface TestApi {
 private class TestClient : AbstractRestClient() {
 	override val baseUri = "https://api.github.com" // TODO: mock server on localhost
 	override val logLevel = HttpLoggingInterceptor.Level.NONE
-	val testApi by clearableLazyInstance { restClient.create(TestApi::class.java)!! }
+	val testApi by clearableLazy { restClient.create(TestApi::class.java)!! }
 
 	override fun cleanup() {
 		super.cleanup()

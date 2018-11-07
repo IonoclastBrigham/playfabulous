@@ -27,7 +27,7 @@ typealias Initializer<T> = (()->T)
  * @see ClearableLazyInstance
  * @see clear
  */
-fun <T : Any> clearableLazyInstance(init: Initializer<T>) : ReadOnlyProperty<Any, T> = ClearableLazyInstance(init)
+fun <T : Any> clearableLazy(init: Initializer<T>) : ClearableLazyInstance<T> = ClearableLazyInstance(init)
 
 /**
  * Property delegate similar to default `lazy`, but the backing field is clearable and re-inita'able.
@@ -36,7 +36,7 @@ fun <T : Any> clearableLazyInstance(init: Initializer<T>) : ReadOnlyProperty<Any
  *
  * ```
  * class ResourceHolder(resPath: File) {
- *     val res: Resource by clearableLazyInstance { loadResource(resPath) }
+ *     val res: Resource by clearableLazy { loadResource(resPath) }
  *
  *     fun loadResource() = ...
  *
@@ -47,7 +47,7 @@ fun <T : Any> clearableLazyInstance(init: Initializer<T>) : ReadOnlyProperty<Any
  * }
  * ```
  *
- * @see clearableLazyInstance
+ * @see clearableLazy
  * @see clear
  */
 class ClearableLazyInstance<T : Any>(private val init: Initializer<T>) : ReadOnlyProperty<Any, T> {
@@ -60,6 +60,11 @@ class ClearableLazyInstance<T : Any>(private val init: Initializer<T>) : ReadOnl
 		@Suppress("UNCHECKED_CAST")
 		field as T
 	}
+
+	/**
+	 * @return the value of the local property.
+	 */
+	operator fun getValue(nothing: Nothing?, property: KProperty<*>) = getValue(Unit, property)
 
 	fun clear() {
 		field = null
