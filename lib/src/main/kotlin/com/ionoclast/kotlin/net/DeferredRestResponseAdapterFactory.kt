@@ -66,7 +66,7 @@ private class RestResponseAdapter<T>(private val modelType: Type) : CallAdapter<
 
 			override fun onFailure(call: Call<T>, ex: Throwable) {
 				val computedErr = if (ex is SocketException && (ex.message == "Socket closed") || ex is IOException && (ex.message == "Canceled")) {
-					CancellationException(ex.message)
+					ApiError(ex.message!!, cause = CancellationException(ex.message))
 				} else {
 					val path = call.request().url().encodedPath()
 					ApiError("API call failed: $path", cause = ex)
