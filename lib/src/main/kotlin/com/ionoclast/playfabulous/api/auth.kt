@@ -86,8 +86,8 @@ suspend fun AuthApi.loginWithEmail(request: EmailLoginRequest)
  * @param request validation request parameters.
  * @see validateSession
  */
-fun AuthApi.validateSessionAsync(titleId: String, key: String, request: SessionValidationRequest)
-		= validateSessionUrlAsync(AuthApi.sessionValidateEndpoint(titleId), key, request)
+fun AuthApi.validateSessionAsync(key: String, request: SessionValidationRequest)
+		= validateSessionUrlAsync(AuthApi.sessionValidateEndpoint(request.TitleId), key, request)
 
 /**
  * Validates a PlayFab session ticket (suspending).
@@ -96,5 +96,5 @@ fun AuthApi.validateSessionAsync(titleId: String, key: String, request: SessionV
  * @param request validation request parameters.
  * @see validateSessionAsync
  */
-suspend fun AuthApi.validateSession(titleId: String, key: String, request: SessionValidationRequest)
-		= validateSessionAsync(titleId, key, request).await()
+suspend fun AuthApi.validateSession(key: String, request: SessionValidationRequest)
+		= validateSessionAsync(key, request).await()
