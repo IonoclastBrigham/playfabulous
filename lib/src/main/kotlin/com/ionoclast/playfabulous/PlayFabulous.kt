@@ -17,6 +17,7 @@ import com.ionoclast.kotlin.delegate.clearableLazy
 import com.ionoclast.kotlin.net.AbstractRestClient
 import com.ionoclast.playfabulous.api.AuthApi
 import com.ionoclast.playfabulous.api.PlayerAccountApi
+import okhttp3.logging.HttpLoggingInterceptor
 
 
 /**
@@ -34,6 +35,7 @@ class PlayFabulous : AbstractRestClient() {
 			"yyyy-MM-dd'T'HH:mm:ss'Z'",
 			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 	)
+	override val logLevel = HttpLoggingInterceptor.Level.BODY
 
 	val authApi by clearableLazy { restClient.create(AuthApi::class.java)!! }
 

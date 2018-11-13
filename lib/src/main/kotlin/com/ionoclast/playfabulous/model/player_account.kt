@@ -45,7 +45,7 @@ typealias RegisterUserResponse = DeferredResponse<RegisterPlayerResult>
 
 // endregion
 
-// region Player Info Request
+// region Get Player Info Request
 
 data class PlayerInfoRequest(
 		val TitleId: String,
@@ -55,7 +55,7 @@ data class PlayerInfoRequest(
 
 // endregion
 
-// region Player Info Response
+// region Get Player Info Response
 
 data class PlayerInfoResult(
 		val PlayFabId: PlayFabId,
@@ -63,5 +63,25 @@ data class PlayerInfoResult(
 )
 
 typealias PlayerInfoResponse = DeferredResponse<PlayerInfoResult>
+
+// endregion
+
+// region Set Title Data Request
+
+data class UpdateUserDataRequest(
+		@Expose(serialize = false, deserialize = false)
+		val TitleId: String,
+		val PlayFabId: PlayFabId,
+		val Permission: UserDataPermission,
+		val Data: Any
+)
+
+// endregion
+
+// region Set Title Data Response
+
+data class UpdateUserDataResult(val DataVersion: Long)
+
+typealias UpdateUserDataResponse = DeferredResponse<UpdateUserDataResult>
 
 // endregion

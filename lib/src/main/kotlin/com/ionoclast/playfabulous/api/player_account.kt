@@ -29,6 +29,7 @@ interface PlayerAccountApi {
 	companion object {
 		fun registerAccountEndpoint(titleId: String) = endpointUrl(titleId, "Client/RegisterPlayFabUser")
 		fun playerInfoEndpoint(titleId: String) = endpointUrl(titleId, "Server/GetPlayerCombinedInfo")
+		fun userDataEndpoint(titleId: String) = endpointUrl(titleId, "Server/UpdateUserData")
 	}
 
 
@@ -50,6 +51,11 @@ interface PlayerAccountApi {
 	fun getPlayerInfoUrlAsync(@Url url: String,
 	                          @Header("X-SecretKey") key: SecretKey,
 	                          @Body request: PlayerInfoRequest): PlayerInfoResponse
+
+	@POST
+	fun updateUserDataUrlAsync(@Url url: String,
+	                           @Header("X-SecretKey") key: SecretKey,
+	                           @Body request: UpdateUserDataRequest): UpdateUserDataResponse
 }
 
 /**
@@ -69,9 +75,13 @@ suspend fun PlayerAccountApi.register(request: RegisterPlayerRequest)
 		= registerAsync(request).await()
 
 fun PlayerAccountApi.getPlayerInfoAsync(key: SecretKey, request: PlayerInfoRequest)
-		= getPlayerInfoUrlAsync(PlayerAccountApi.playerInfoEndpoint(request.TitleId),
-				key,
-				request)
+		= getPlayerInfoUrlAsync(PlayerAccountApi.playerInfoEndpoint(request.TitleId), key, request)
 
 suspend fun PlayerAccountApi.getPlayerInfo(key: SecretKey, request: PlayerInfoRequest)
 		= getPlayerInfoAsync(key, request).await()
+
+fun PlayerAccountApi.updateUserDataAsync(key: SecretKey, request: UpdateUserDataRequest)
+		= updateUserDataUrlAsync(PlayerAccountApi.userDataEndpoint(request.TitleId), key, request)
+
+suspend fun PlayerAccountApi.updateUserData(key: SecretKey, request: UpdateUserDataRequest)
+		= updateUserDataAsync(key, request).await()
