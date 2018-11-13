@@ -13,6 +13,7 @@
 
 package com.ionoclast.playfabulous.model
 
+import com.google.gson.annotations.Expose
 import java.util.*
 
 
@@ -47,15 +48,25 @@ data class EmailLoginRequest(
 
 //region Login Response
 
-inline class SessionTicket(val value: String)
+inline class SessionTicket(val value: String) {
+	override fun toString() = value
+}
 
-inline class PlayFabId(val value: String)
+inline class PlayFabId(val value: String) {
+	override fun toString() = value
+}
 
-inline class AndroidDeviceInfo(val AndroidDeviceId: String)
+inline class AndroidDeviceInfo(val value: String) {
+	override fun toString() = value
+}
 
-inline class IosDeviceInfo(val IosDeviceId: String)
+inline class IosDeviceInfo(val value: String) {
+	override fun toString() = value
+}
 
-inline class XboxInfo(val XboxUserId: String)
+inline class XboxInfo(val value: String) {
+	override fun toString() = value
+}
 
 data class UserAccountInfo(
 		val Created: Date,
@@ -117,13 +128,17 @@ data class LoginResult(
 //	val SettingsForUser: UserSettings? = null
 )
 
-typealias LoginResponse = PlayFabResponse<LoginResult>
+typealias LoginResponse = DeferredResponse<LoginResult>
 
 //endregion
 
 //region Session Validation Request
 
-data class SessionValidationRequest(val SessionTicket: SessionTicket)
+data class SessionValidationRequest(
+		@Expose(serialize = false, deserialize = false)
+		val TitleId: String = "",
+		val SessionTicket: SessionTicket
+)
 
 //endregion
 
@@ -131,6 +146,6 @@ data class SessionValidationRequest(val SessionTicket: SessionTicket)
 
 data class SessionValidationResult(val UserInfo: UserAccountInfo)
 
-typealias SessionValidationResponse = PlayFabResponse<SessionValidationResult>
+typealias SessionValidationResponse = DeferredResponse<SessionValidationResult>
 
 //endregion

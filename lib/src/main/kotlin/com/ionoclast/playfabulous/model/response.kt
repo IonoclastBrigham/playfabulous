@@ -13,14 +13,16 @@
 
 package com.ionoclast.playfabulous.model
 
-import com.ionoclast.kotlin.net.AbstractRestClient
+import com.ionoclast.kotlin.net.AbstractRestClient.RestResponse
 import kotlinx.coroutines.Deferred
 
 
-data class PlayFabResult<T> (
+data class PlayFabResult<T>(
 	val code: Int,
 	val status: String,
 	val data: T
-)
+) {
+	val isSuccessful get() = code <= 400
+}
 
-typealias PlayFabResponse<T> = Deferred<AbstractRestClient.RestResponse<PlayFabResult<T>>>
+typealias DeferredResponse<T> = Deferred<RestResponse<PlayFabResult<T>>>
