@@ -47,11 +47,35 @@ interface PlayerAccountApi {
 	@POST
 	fun registerUrlAsync(@Url url: String, @Body request: RegisterPlayerRequest): RegisterUserResponse
 
+	/**
+	 * Gets requested player data (async) using given secret key.
+	 *
+	 * You should probably use `getPlayerInfoAsync` or `getPlayerInfo` instead.
+	 *
+	 * @param url required because any call could go to a different subdomain.
+	 * @param key PlayFab title's admin/server secret key.
+	 * @param request player data request params.
+	 *
+	 * @see getPlayerInfoAsync
+	 * @see getPlayerInfo
+	 */
 	@POST
 	fun getPlayerInfoUrlAsync(@Url url: String,
 	                          @Header("X-SecretKey") key: SecretKey,
 	                          @Body request: PlayerInfoRequest): PlayerInfoResponse
 
+	/**
+	 * Sets/updates requested player data (async) using given secret key.
+	 *
+	 * You should probably use `updateUserDataAsync` or `updateUserData` instead.
+	 *
+	 * @param url required because any call could go to a different subdomain.
+	 * @param key PlayFab title's admin/server secret key.
+	 * @param request player data update request params.
+	 *
+	 * @see updateUserDataAsync
+	 * @see updateUserData
+	 */
 	@POST
 	fun updateUserDataUrlAsync(@Url url: String,
 	                           @Header("X-SecretKey") key: SecretKey,
@@ -74,14 +98,38 @@ fun PlayerAccountApi.registerAsync(request: RegisterPlayerRequest)
 suspend fun PlayerAccountApi.register(request: RegisterPlayerRequest)
 		= registerAsync(request).await()
 
+/**
+ * Gets requested player data (async) using given secret key.
+ * @param key PlayFab title's admin/server secret key.
+ * @param request player data request params.
+ * @see getPlayerInfo
+ */
 fun PlayerAccountApi.getPlayerInfoAsync(key: SecretKey, request: PlayerInfoRequest)
 		= getPlayerInfoUrlAsync(PlayerAccountApi.playerInfoEndpoint(request.TitleId), key, request)
 
+/**
+ * Gets requested player data (suspending) using given secret key.
+ * @param key PlayFab title's admin/server secret key.
+ * @param request player data request params.
+ * @see getPlayerInfoAsync
+ */
 suspend fun PlayerAccountApi.getPlayerInfo(key: SecretKey, request: PlayerInfoRequest)
 		= getPlayerInfoAsync(key, request).await()
 
+/**
+ * Sets/updates requested player data (async) using given secret key.
+ * @param key PlayFab title's admin/server secret key.
+ * @param request player data update request params.
+ * @see updateUserData
+ */
 fun PlayerAccountApi.updateUserDataAsync(key: SecretKey, request: UpdateUserDataRequest)
 		= updateUserDataUrlAsync(PlayerAccountApi.userDataEndpoint(request.TitleId), key, request)
 
+/**
+ * Sets/updates requested player data (suspending) using given secret key.
+ * @param key PlayFab title's admin/server secret key.
+ * @param request player data update request params.
+ * @see updateUserDataAsync
+ */
 suspend fun PlayerAccountApi.updateUserData(key: SecretKey, request: UpdateUserDataRequest)
 		= updateUserDataAsync(key, request).await()
