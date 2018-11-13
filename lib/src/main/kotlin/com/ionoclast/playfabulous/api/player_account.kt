@@ -14,9 +14,9 @@
 package com.ionoclast.playfabulous.api
 
 import com.ionoclast.playfabulous.endpointUrl
-import com.ionoclast.playfabulous.model.RegisterPlayerRequest
-import com.ionoclast.playfabulous.model.RegisterUserResponse
+import com.ionoclast.playfabulous.model.*
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Url
 
@@ -28,6 +28,7 @@ import retrofit2.http.Url
 interface PlayerAccountApi {
 	companion object {
 		fun registerAccountEndpoint(titleId: String) = endpointUrl(titleId, "Client/RegisterPlayFabUser")
+		fun playerInfoEndpoint(titleId: String) = endpointUrl(titleId, "Server/GetPlayerCombinedInfo")
 	}
 
 
@@ -44,6 +45,11 @@ interface PlayerAccountApi {
 	 */
 	@POST
 	fun registerUrlAsync(@Url url: String, @Body request: RegisterPlayerRequest): RegisterUserResponse
+
+	@POST
+	fun getPlayerInfoUrlAsync(@Url url: String,
+	                          @Header("X-SecretKey") key: SecretKey,
+	                          @Body request: PlayerInfoRequest): PlayerInfoResponse
 }
 
 /**
@@ -61,3 +67,11 @@ fun PlayerAccountApi.registerAsync(request: RegisterPlayerRequest)
  */
 suspend fun PlayerAccountApi.register(request: RegisterPlayerRequest)
 		= registerAsync(request).await()
+
+fun PlayerAccountApi.getPlayerInfoAsync(key: SecretKey, request: PlayerInfoRequest)
+		= getPlayerInfoUrlAsync(PlayerAccountApi.playerInfoEndpoint(request.TitleId),
+				key,
+				request)
+
+suspend fun PlayerAccountApi.getPlayerInfo(key: SecretKey, request: PlayerInfoRequest)
+		= getPlayerInfoAsync(key, request).await()

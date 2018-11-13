@@ -16,7 +16,7 @@ package com.ionoclast.playfabulous.model
 import com.google.gson.annotations.Expose
 
 
-//region Player Register Request
+// region Player Register Request
 
 data class RegisterPlayerRequest(
 		val TitleId: String,
@@ -27,9 +27,9 @@ data class RegisterPlayerRequest(
 		val RequireBothUsernameAndEmail: Boolean = false
 )
 
-//endregion
+// endregion
 
-//region Player Register Response
+// region Player Register Response
 
 data class RegisterPlayerResult(
 		@Expose(serialize = false, deserialize = false)
@@ -43,4 +43,25 @@ data class RegisterPlayerResult(
 
 typealias RegisterUserResponse = DeferredResponse<RegisterPlayerResult>
 
-//endregion
+// endregion
+
+// region Player Info Request
+
+data class PlayerInfoRequest(
+		val TitleId: String,
+		val PlayFabId: PlayFabId,
+		val InfoRequestParameters: PlayerInfoRequestParams
+)
+
+// endregion
+
+// region Player Info Response
+
+data class PlayerInfoResult(
+		val PlayFabId: PlayFabId,
+		val InfoResultPayload: PlayerInfo
+)
+
+typealias PlayerInfoResponse = DeferredResponse<PlayerInfoResult>
+
+// endregion

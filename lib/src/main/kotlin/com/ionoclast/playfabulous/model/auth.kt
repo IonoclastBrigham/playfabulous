@@ -17,7 +17,7 @@ import com.google.gson.annotations.Expose
 import java.util.*
 
 
-//region Login Request
+// region Login Request
 
 data class PlayerInfoRequestParams(
 		val GetCharacterInventories: Boolean = false,
@@ -44,17 +44,9 @@ data class EmailLoginRequest(
 		val InfoRequestParameters: PlayerInfoRequestParams? = null
 )
 
-//endregion
+// endregion
 
-//region Login Response
-
-inline class SessionTicket(val value: String) {
-	override fun toString() = value
-}
-
-inline class PlayFabId(val value: String) {
-	override fun toString() = value
-}
+// region Login Response
 
 inline class AndroidDeviceInfo(val value: String) {
 	override fun toString() = value
@@ -130,9 +122,9 @@ data class LoginResult(
 
 typealias LoginResponse = DeferredResponse<LoginResult>
 
-//endregion
+// endregion
 
-//region Session Validation Request
+// region Session Validation Request
 
 data class SessionValidationRequest(
 		@Expose(serialize = false, deserialize = false)
@@ -140,12 +132,12 @@ data class SessionValidationRequest(
 		val SessionTicket: SessionTicket
 )
 
-//endregion
+// endregion
 
-//region Session Validation Response
+// region Session Validation Response
 
 data class SessionValidationResult(val UserInfo: UserAccountInfo)
 
 typealias SessionValidationResponse = DeferredResponse<SessionValidationResult>
 
-//endregion
+// endregion
