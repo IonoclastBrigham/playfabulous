@@ -14,10 +14,7 @@
 package com.ionoclast.playfabulous.api
 
 import com.ionoclast.playfabulous.endpointUrl
-import com.ionoclast.playfabulous.model.EmailLoginRequest
-import com.ionoclast.playfabulous.model.LoginResponse
-import com.ionoclast.playfabulous.model.SessionValidationRequest
-import com.ionoclast.playfabulous.model.SessionValidationResponse
+import com.ionoclast.playfabulous.model.*
 import retrofit2.http.*
 
 
@@ -59,7 +56,7 @@ interface AuthApi {
 	 * @see validateSession
 	 */
 	@POST
-	fun validateSessionUrlAsync(@Url url: String, @Header("X-SecretKey") key: String, @Body request: SessionValidationRequest): SessionValidationResponse
+	fun validateSessionUrlAsync(@Url url: String, @Header("X-SecretKey") key: SecretKey, @Body request: SessionValidationRequest): SessionValidationResponse
 }
 
 
@@ -81,20 +78,18 @@ suspend fun AuthApi.loginWithEmail(request: EmailLoginRequest)
 
 /**
  * Validates a PlayFab session ticket (async).
- * @param titleId title ID that this session is associated with.
  * @param key Server/Admin API secret key.
  * @param request validation request parameters.
  * @see validateSession
  */
-fun AuthApi.validateSessionAsync(key: String, request: SessionValidationRequest)
+fun AuthApi.validateSessionAsync(key: SecretKey, request: SessionValidationRequest)
 		= validateSessionUrlAsync(AuthApi.sessionValidateEndpoint(request.TitleId), key, request)
 
 /**
  * Validates a PlayFab session ticket (suspending).
- * @param titleId title ID that this session is associated with.
  * @param key Server/Admin API secret key.
  * @param request validation request parameters.
  * @see validateSessionAsync
  */
-suspend fun AuthApi.validateSession(key: String, request: SessionValidationRequest)
+suspend fun AuthApi.validateSession(key: SecretKey, request: SessionValidationRequest)
 		= validateSessionAsync(key, request).await()
