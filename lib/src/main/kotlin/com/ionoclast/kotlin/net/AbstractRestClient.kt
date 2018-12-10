@@ -20,6 +20,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.sendBlocking
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.internal.platform.Platform
 import okhttp3.internal.platform.Platform.INFO
@@ -27,6 +28,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -74,6 +76,7 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
         override fun toString() = message!!
     }
 
+    protected abstract val maxIdleConnections: Int
 
     private val job by clearableLazy { Job() }
     override val coroutineContext get() = Dispatchers.IO + job
@@ -99,10 +102,12 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
      * @see DateDeserializer
      */
     protected open fun buildClientAdapter(): Retrofit {
+        val pool = ConnectionPool(maxIdleConnections, 5L, TimeUnit.MINUTES)
         val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor())
                 .connectTimeout(timeoutSecs, TimeUnit.SECONDS)
                 .readTimeout(timeoutSecs , TimeUnit.SECONDS)
+                .connectionPool(pool)
                 .build()
 
         val gson = GsonBuilder().apply {

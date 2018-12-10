@@ -34,6 +34,8 @@ private interface TestApi {
 private class TestClient : AbstractRestClient() {
 	override val baseUri = "https://api.github.com" // TODO: mock server on localhost
 	override val logLevel = HttpLoggingInterceptor.Level.NONE
+	override val maxIdleConnections = 1
+
 	val testApi by clearableLazy { restClient.create(TestApi::class.java)!! }
 
 	override fun cleanup() {

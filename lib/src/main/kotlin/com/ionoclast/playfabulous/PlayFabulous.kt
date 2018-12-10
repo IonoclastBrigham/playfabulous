@@ -23,7 +23,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 /**
  * A Kotlin-first PlayFab API Client.
  */
-class PlayFabulous : AbstractRestClient() {
+class PlayFabulous(override val maxIdleConnections: Int = 5) : AbstractRestClient() {
 	/**
 	 * ⚠️ INVALID: always override with a `@Url` param.
 	 *
