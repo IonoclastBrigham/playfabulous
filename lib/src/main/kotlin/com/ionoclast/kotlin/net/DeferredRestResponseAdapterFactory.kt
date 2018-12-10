@@ -60,7 +60,7 @@ private class RestResponseAdapter<T>(private val modelType: Type) : CallAdapter<
 		call.enqueue(object : Callback<T> {
 			override fun onResponse(call: Call<T>, response: Response<T>) {
 				val restResponse = response.takeIf { it.isSuccessful }?.let { RestResponse(it.body()) }
-						?: RestResponse(err = ApiError("Api Error (${response.code()})", response.errorBody()?.string()))
+						?: RestResponse(err = ApiError("Api Error (${response.code()})", response.errorBody()?.string(), response.code()))
 				awaitable.complete(restResponse)
 			}
 
