@@ -17,6 +17,7 @@ import com.ionoclast.kotlin.delegate.clearableLazy
 import com.ionoclast.kotlin.net.AbstractRestClient
 import com.ionoclast.playfabulous.api.AuthApi
 import com.ionoclast.playfabulous.api.PlayerAccountApi
+import com.ionoclast.playfabulous.api.SegmentApi
 import okhttp3.logging.HttpLoggingInterceptor
 
 
@@ -41,11 +42,14 @@ class PlayFabulous(override val maxIdleConnections: Int = 5) : AbstractRestClien
 
 	val playerAccountApi by clearableLazy { restClient.create(PlayerAccountApi::class.java)!! }
 
+	val segmentApi by clearableLazy { restClient.create(SegmentApi::class.java) }
+
 	override fun cleanup() {
 		super.cleanup()
 
 		::authApi.clear()
 		::playerAccountApi.clear()
+		::segmentApi.clear()
 	}
 }
 

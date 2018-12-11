@@ -128,9 +128,9 @@ abstract class AbstractRestClient : ClientConfig, CoroutineScope {
         ::job.clear()
 
         (restClient.callFactory() as? OkHttpClient)?.run {
-            dispatcher().executorService().shutdown()
-            connectionPool().evictAll()
-            cache().close()
+            dispatcher()?.executorService()?.shutdown()
+            connectionPool()?.evictAll()
+            cache()?.close()
         }
         ::restClient.clear()
     }
