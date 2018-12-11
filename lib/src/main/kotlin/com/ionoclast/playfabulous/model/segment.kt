@@ -49,7 +49,7 @@ data class AccountInfo(
 		val Email: String
 )
 
-data class PlayerProfile(
+data class SegmentPlayerProfile(
 		val PlayerId: PlayFabId,
 		val Created: Date,
 		val LastLogin: Date,
@@ -70,7 +70,7 @@ data class PlayersInSegmentRequest(
 data class PlayersInSegmentResult(
 		val ProfilesInSegment: Int,
 		val ContinuationToken: ContinuationToken?,
-		val PlayerProfiles: List<PlayerProfile>
+		val PlayerProfiles: List<SegmentPlayerProfile>
 )
 
 typealias PlayersInSegmentResponse = DeferredResponse<PlayersInSegmentResult>

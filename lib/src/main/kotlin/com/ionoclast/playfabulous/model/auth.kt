@@ -60,14 +60,19 @@ inline class XboxInfo(val value: String) {
 	override fun toString() = value
 }
 
+data class CustomIdInfo(val CustomId: String)
+
+data class PrivateAccountInfo(val Email: String)
+
 data class UserAccountInfo(
 		val Created: Date,
 		val PlayFabId: PlayFabId,
 		val Username: String? = null,
 		val AndroidDeviceInfo: AndroidDeviceInfo? = null,
 		val IosDeviceInfo: IosDeviceInfo? = null,
-		val XboxInfo: XboxInfo? = null
-//		val CustomIdInfo: CustomIdInfo? = null,
+		val XboxInfo: XboxInfo? = null,
+		val CustomIdInfo: CustomIdInfo? = null,
+		val PrivateInfo: PrivateAccountInfo? = null
 //		val FacebookInfo: FacebookInfo? = null,
 //		val FacebookInstantGamesIdInfo: FacebookInstantGamesIdInfo? = null,
 //		val GameCenterInfo: GameCenterInfo? = null,
@@ -75,7 +80,6 @@ data class UserAccountInfo(
 //		val KongregateInfo: KongregateInfo? = null,
 //		val NintendoSwitchDeviceIdInfo: NintendoSwitchDeviceIdInfo? = null,
 //		val OpenIdInfo: List<OpenIdInfo>? = null,
-//		val PrivateInfo: PrivateAccountInfo? = null,
 //		val PsnInfo: PsnInfo? = null,
 //		val SteamInfo: SteamInfo? = null,
 //		val TitleInfo: TitleInfo? = null,
@@ -94,14 +98,20 @@ data class UserDataRecord(
 	val Permission: UserDataPermission? = null
 )
 
+data class PlayerProfile(
+		val PublisherId: String,
+		val TitleId: String,
+		val PlayerId: PlayFabId
+)
+
 data class PlayerInfo(
 	val AccountInfo: UserAccountInfo? = null,
 	val TitleData: Map<String, String>? = null,
 	val UserReadOnlyData: Map<String, UserDataRecord>? = null,
 	val UserData: Map<String, UserDataRecord>? = null,
 	val UserDataVersion: Long = 0L,
-	val UserReadOnlyDataVersion: Long = 0L
-//	val PlayerProfile: PlayerProfileModel? = null,
+	val UserReadOnlyDataVersion: Long = 0L,
+	val PlayerProfile: PlayerProfile? = null
 //	val PlayerStatistics: List<StatisticValue>? = null,
 //	val CharacterList: List<CharacterResult>? = null,
 //	val CharacterInventories: List<CharacterInventory>? = null,
