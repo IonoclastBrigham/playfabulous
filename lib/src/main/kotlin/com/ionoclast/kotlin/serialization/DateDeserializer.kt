@@ -17,6 +17,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import java.lang.reflect.Type
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,23 +29,22 @@ import java.util.*
  * @see GsonBuilder.registerTypeAdapter
  */
 class DateDeserializer(fallbackDateFormats: Array<String>?) : JsonDeserializer<Date> {
-    private val parsers by lazy { fallbackDateFormats?.map { fmt -> SimpleDateFormat(fmt) } }
+    private val parsers by lazy { fallbackDateFormats?.map { fmt -> SimpleDateFormat(fmt) }?.toTypedArray() }
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Date {
         try {
             return Date(json.asLong)
         } catch (e: Exception) {
-            parsers?.let { parsers ->
-                val jsonString = json.asString
-                for (parser in parsers) {
-                    try {
-                        return parser.parse(jsonString)
-                    } catch (e: Exception) {
-                        // ignore
-                    }
+            val jsonString = json.asString
+            parsers?.forEach {
+                val parser = it.clone() as DateFormat // `parse()` isn't reentrant, so we clone each SDF per-call
+                try {
+                    return parser.parse(jsonString)
+                } catch (e: Exception) {
+                    // ignore
                 }
             }
-            throw ParseException("Unknown date format $json", 0)
+            throw ParseException("Unknown date format $jsonString", 0)
         }
     }
 }
