@@ -76,6 +76,14 @@ data class UpdateUserDataRequest(
 		val Data: Any
 )
 
+data class UpdateUserReadOnlyDataRequest(
+		@Expose(serialize = false, deserialize = false)
+		val TitleId: String,
+		val PlayFabId: PlayFabId,
+		val Permission: UserDataPermission,
+		val Data: Any
+)
+
 // endregion
 
 // region Set Title Data Response

@@ -30,6 +30,7 @@ interface PlayerAccountApi {
 		fun registerAccountEndpoint(titleId: String) = endpointUrl(titleId, "Client/RegisterPlayFabUser")
 		fun playerInfoEndpoint(titleId: String) = endpointUrl(titleId, "Server/GetPlayerCombinedInfo")
 		fun userDataEndpoint(titleId: String) = endpointUrl(titleId, "Server/UpdateUserData")
+		fun userRODataEndpoint(titleId: String) = endpointUrl(titleId, "Server/UpdateUserReadOnlyData")
 	}
 
 
@@ -80,6 +81,23 @@ interface PlayerAccountApi {
 	fun updateUserDataUrlAsync(@Url url: String,
 	                           @Header("X-SecretKey") key: SecretKey,
 	                           @Body request: UpdateUserDataRequest): UpdateUserDataResponse
+
+	/**
+	 * Sets/updates requested player readonly data (async) using given secret key.
+	 *
+	 * You should probably use `updateUserReadOnlyDataAsync` or `updateUserReadOnlyData` instead.
+	 *
+	 * @param url required because any call could go to a different subdomain.
+	 * @param key PlayFab title's admin/server secret key.
+	 * @param request player data update request params.
+	 *
+	 * @see updateUserReadOnlyDataAsync
+	 * @see updateUserReadOnlyData
+	 */
+	@POST
+	fun updateUserReadOnlyDataUrlAsync(@Url url: String,
+	                           @Header("X-SecretKey") key: SecretKey,
+	                           @Body request: UpdateUserReadOnlyDataRequest): UpdateUserDataResponse
 }
 
 /**
@@ -133,3 +151,21 @@ fun PlayerAccountApi.updateUserDataAsync(key: SecretKey, request: UpdateUserData
  */
 suspend fun PlayerAccountApi.updateUserData(key: SecretKey, request: UpdateUserDataRequest)
 		= updateUserDataAsync(key, request).await()
+
+/**
+ * Sets/updates requested player readonly data (async) using given secret key.
+ * @param key PlayFab title's admin/server secret key.
+ * @param request player data update request params.
+ * @see updateUserReadOnlyData
+ */
+fun PlayerAccountApi.updateUserReadOnlyDataAsync(key: SecretKey, request: UpdateUserReadOnlyDataRequest)
+		= updateUserReadOnlyDataUrlAsync(PlayerAccountApi.userRODataEndpoint(request.TitleId), key, request)
+
+/**
+ * Sets/updates requested player readonly data (suspending) using given secret key.
+ * @param key PlayFab title's admin/server secret key.
+ * @param request player data update request params.
+ * @see updateUserReadOnlyDataAsync
+ */
+suspend fun PlayerAccountApi.updateUserReadOnlyData(key: SecretKey, request: UpdateUserReadOnlyDataRequest)
+		= updateUserReadOnlyDataAsync(key, request).await()

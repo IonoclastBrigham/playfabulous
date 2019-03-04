@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.ionoclast.playfabulous'
-version "0.1.${new Date().getTime()}"
+version "0.4.${new Date().getTime()}"
 
 sourceSets {
     main.kotlin.srcDirs += 'src/main'
